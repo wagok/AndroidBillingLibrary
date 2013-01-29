@@ -15,8 +15,8 @@
 
 package net.robotmedia.billing.helper;
 
-import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
@@ -33,14 +33,16 @@ public abstract class AbstractBillingObserver implements IBillingObserver {
 
 	protected static final String KEY_TRANSACTIONS_RESTORED = "net.robotmedia.billing.transactionsRestored";
 
-	protected Activity activity;
+	protected Context context;
 
-	public AbstractBillingObserver(Activity activity) {
-		this.activity = activity;
+	public AbstractBillingObserver(Context context) {
+		this.context = context;
 	}
 
-	public boolean isTransactionsRestored() {
-		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+
+
+    public boolean isTransactionsRestored() {
+		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		return preferences.getBoolean(KEY_TRANSACTIONS_RESTORED, false);
 	}
 
@@ -54,11 +56,11 @@ public abstract class AbstractBillingObserver implements IBillingObserver {
 	 *            a purchase pending intent for the specified item.
 	 */
 	public void onPurchaseIntent(String itemId, PendingIntent purchaseIntent) {
-		BillingController.startPurchaseIntent(activity, purchaseIntent, null);
+		BillingController.startPurchaseIntent(context, purchaseIntent, null);
 	}
 
 	public void onTransactionsRestored() {
-		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		final Editor editor = preferences.edit();
 		editor.putBoolean(KEY_TRANSACTIONS_RESTORED, true);
 		editor.commit();

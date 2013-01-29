@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 
 import android.app.Activity;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.util.Log;
@@ -53,7 +54,7 @@ public class Compatibility {
         }
 	}
 	
-	public static void startIntentSender(Activity activity, IntentSender intentSender, Intent intent) {
+	public static void startIntentSender(Context context, IntentSender intentSender, Intent intent) {
        if (startIntentSender != null) {
     	    final Object[] args = new Object[5];
     	    args[0] = intentSender;
@@ -62,7 +63,7 @@ public class Compatibility {
     	    args[3] = Integer.valueOf(0);
     	    args[4] = Integer.valueOf(0);
             try {
-            	startIntentSender.invoke(activity, args);
+            	startIntentSender.invoke(context, args);
 			} catch (Exception e) {
 				Log.e(Compatibility.class.getSimpleName(), "startIntentSender", e);
 			}
